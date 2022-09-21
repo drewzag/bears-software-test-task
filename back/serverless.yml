@@ -1,0 +1,60 @@
+service: back
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamoDB:*
+          Resource:
+            - arn:aws:dynamodb:us-east-1:195729506243:table/Users
+
+functions:
+  createUser:
+    handler: src/createUser.handler
+    events:
+      - httpApi:
+          path: /users
+          method: post
+  getUsers:
+    handler: src/getUsers.handler
+    events:
+      - httpApi:
+          path: /users
+          method: get
+  getSingleUser:
+    handler: src/getSingleUser.handler
+    events:
+      - httpApi:
+          path: /users/{id}
+          method: get
+  updateUser:
+    handler: src/updateUser.handler
+    events:
+      - httpApi:
+          path: /users/{id}
+          method: put
+  deleteUser:
+    handler: src/deleteUser.handler
+    events:
+      - httpApi:
+          path: /users/{id}
+          method: delete
+
+resources:
+  Resources:
+    UsersRes:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Users
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
