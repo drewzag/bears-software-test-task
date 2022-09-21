@@ -1,7 +1,11 @@
 ## My test project for oversecured
 
-Clone repo
-Open front folder in CLI
+**Clone repo**
+
+**Open `front folder` in CLI**
+
 Type:
-yarn
-yarn dev
+
+`yarn`
+
+`yarn dev`
